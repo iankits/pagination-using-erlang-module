@@ -1,0 +1,140 @@
+Documentation: Pagination Using Erlang
+Author: Ankit Singh (ankit@hover.in or ankitsingh.05@gmail.com) 
+Modules: hi_pagination_worker.erl, hi_pagination_sup.erl, hi_pagination_app.erl,
+	 hi_pagination_app.app,  pagestyle.css
+
+NOTE: compile the modules using erl -make
+
+How to start hi_pagination modules?
+
+(ankit@127.0.0.1)1>  application:start(hi_pagination_app).
+
+Likely gives output message when successfully started the gen-server:
+
+In hi_pagination_app start : start,pagination
+
+In pagination_sup:start_link, args from pagination_app is pagination
+
+In hi_pagination_sup:init, args from pagination_sup:start_link is pagination
+
+ NuserWorkers = [{hi_pagination_worker_1,
+
+                     {hi_pagination_worker,start_link,
+
+                         [{hi_pagination_worker_1}]},
+
+                     permanent,10,worker,
+
+                     [hi_pagination_worker]}]
+
+
+in pagination_worker startlink/1: InitArg = {hi_pagination_worker_1,
+
+                                             "hi_pg_paginate_ankit@127.0.0.1"}
+
+ Init:  PG:"hi_pg_paginate_ankit@127.0.0.1"
+
+{ok,<0.618.0>}
+
+hi_pagination_worker.erl
+
+List of modules in hi_pagination_worker:
+
+code_change/3        	get_child_spec/1  		group_name/0         
+
+handle_call/3        	handle_cast/2			handle_content/3     
+
+handle_info/2        	handle_navigation/4 		init/1               
+
+module_info/0        	module_info/1        		paginate/5           
+
+start/0              	start_link/0  			start_link/1         
+
+terminate/2       
+
+In your yaws page use the following lines.
+
+[Content , Pagination] = hi_pagination_worker:paginate( FullList, ContentFun, OptQuery, CurrPage , Max).
+
+Here, 
+	Content – Its the Content given by hi_pagiantion_worker.
+	Pagination – Number of pages accourding to the input.
+	FullList – Full List to be paginated
+	ContentFun – Function of content to be extracted & print is be passed to the module.M:F(A)
+	OptQuery – any Optional query user like to use else send empty string. 
+			Eg. 	OptQuery=”follow=1&” %% for any optional query
+				OptQuery = “” %% If there is no optional string
+	CurrPage – Get current page & pass it.
+	Max –   Max Number of content to be displayed from the list. Like 10 items per page. 
+		It will paginate accourding to the max items per page.
+
+About the important modules of  hi_pagination_worker:
+The module is to handle all pagination of any list produced by any M:F(A).
+
+1. paginate( FullList, ContentFun, OptQuery, CurrPage , Max)	calls 
+handle_call({paginate, List, HandlerFun, OptQuery, Page, MaxItemsPerPage},_From,_State)
+
+2 . handles_call main function is to process the request of pagination and content formatting.
+ 
+Reply = [ ?MODULE:handle_content(Length, FilteredList, HandlerFun ),
+	      ?MODULE:handle_navigation( ComID, Page, MaxItemsPerPage,NumPages) 
+	      ],
+then 
+Reply = [Content , Pagination] %% given above for yaws page written by the user.
+
+NOTE: Reply contains CSS formattings. So, we have provided a css file named pagestyle.css. 
+This css file is used to print out formatted pages & paginations. 
+You can use your own css by replacing contents of pagestyle.css or the file.
+
+For more clearly understand the usage then you can go through the sample pagination.yaws file.
+
+hi_pagination_sup.erl
+
+List of modules in hi_pagination_sup:
+
+init/1		module_info/0  	module_info/1  	start_child/1
+start_link/0   	start_link/1
+
+Its is the supervisor for the gen-server hi_pagination_worker.erl
+
+It can be used by the following command:
+
+(ankit@127.0.0.1)2> hi_pagination_sup:start_link().
+
+
+Likely gives output message when successfully started the gen-server:
+
+
+In pagination_sup:start_link, args from pagination_app is []
+
+In hi_pagination_sup:init, args from pagination_sup:start_link is []
+
+ NuserWorkers = [{hi_pagination_worker_1,
+
+                     {hi_pagination_worker,start_link,
+
+                         [{hi_pagination_worker_1}]},
+
+                     permanent,10,worker,
+
+                     [hi_pagination_worker]}]
+
+
+
+in pagination_worker startlink/1: InitArg = {hi_pagination_worker_1,
+
+                                             "hi_pg_paginate_ankit@127.0.0.1"}
+
+ Init:  PG:"hi_pg_paginate_ankit@127.0.0.1"
+
+{ok,<0.624.0>}
+
+
+hi_pagination_app.erl
+
+List of modules in hi_pagination_app:
+
+module_info/0  module_info/1  	start/2        		stop/1
+
+Its is the master of both supervisor & gen-server. The usage of this is given at the firest page in how to use description.
+
