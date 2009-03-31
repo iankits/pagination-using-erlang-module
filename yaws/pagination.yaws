@@ -1,0 +1,68 @@
+<html>
+<title> Pagination Example </title>
+<h2>Sample Yaws page for using hi_pagination_worker.erl for pagination</h2>
+<head>
+<link rel="stylesheet" type="text/css" href="http://local.xyz.in:8080/css/pagestyle.css" />
+</head>
+<body>
+<erl>
+
+out(Arg)->
+    
+    %% A sample list. Could be list from table or any other kind.
+    List = [{"ankit@hover.in","developer",005},
+	    {"sushant@hover.in","developer",006},
+	    {"bosky@hover.in","CTO",002},
+	    {"monoj@hover.in","Accountant",008},
+	    {"arun@hover.in","CEO",001},
+	    {"nilesh@hover.in","designer",007},
+	    {"ranjan@hover.in","intern",0013},
+	    {"zeeshan@hover.in","intern",004},
+	    {"kanchan@hover.in","intern",009},
+            {"thiyaga@hover.in","intern",010},
+	    {"srivatsan@hover.in","intern",011},
+	    {"coo@hover.in","intern",016},
+	    {"26th@hover.in","intern",018}	
+	   ],
+   
+    ContentFun = fun({Name,Desig,_})->
+			 "<li>"++ Name ++ " " ++ Desig ++" </li>"
+		 end,
+    
+    %% Example to how to use Optional Query.
+    %%
+    %%  OptQuery  = case queryvar(Arg,"foo") of
+    %% 		    {ok,OptQ}->
+    %% 			"foo="++OptQ++"&";
+    %% 		    undefined ->
+    %% 			"";
+    %% 		    _ ->
+    %% 			""
+    %% 		end,
+
+    %% else if no Optional Query then directly pass empty strin like given below
+    OptQuery ="",
+    
+    CurrPage = case queryvar(Arg,"page") of
+		   {ok,V}->
+		       V;
+		   _ ->
+		       "1"
+	       end,
+    
+    Max  = case queryvar(Arg,"max") of
+	       {ok,V2}->
+		   V2;
+	       _ ->
+		   "5"
+	   end,
+    
+    %% Using hi_pagination_worker module for getting processed Content of List & Pages using pagination.
+    
+    [Content , Pagination] = hi_pagination_worker:paginate( List, ContentFun, OptQuery , CurrPage , Max),
+    
+    {html,Content ++ "<HR>" ++ Pagination }.
+
+</erl>
+</body>
+</html>

@@ -1,0 +1,106 @@
+.hi_browse_categories{
+ /*border:2px solid #f2f2f2;*/
+ margin-bottom: 150px;
+}
+
+.hi_browse_alphabet{
+ border:0 solid #f2f2f2;
+ 
+}
+
+.hi_browse_alphabet a{
+    font-family:Undotum,verdana,helvetica,arial,sans-serif;
+    font-size:13px;
+    margin: 2px; 
+    border: 2px dotted #f2f2f2;
+    color:#12B0B6;
+    padding:5px;
+    float: left;
+    margin-top: 40px;
+    
+ }
+.hi_browse_categories a{
+    font-family:Undotum,verdana,helvetica,arial,sans-serif;
+    font-size:15px;
+    width:150px;
+    margin:2px; float:left;
+    border:1px dotted #f2f2f2; 
+    color:#12B0B6;
+    padding:2px;
+}
+#hi_browse_alphabet .active{
+    background:#2a7af1;
+    color:#FFFFFF;
+    font-weight:bold;
+    display:block;
+    float:left;
+    padding:5px;
+  
+}
+
+.hi_browse_categories_on{
+    background:#2a7af1;
+    color:#FFFFFF;
+    font-weight:bold;
+    display:block;
+    float:left;
+    padding:4px 6px;
+}
+.itemsUl li{
+    margin:10px;
+    width:100%;
+    padding:25px;
+    border:1px dotted gray;
+}
+
+.paginatorDiv {
+    margin: 13px;
+    float: left;
+    width: 100%;
+    margin-left: 35%;
+    padding: 2px;
+}
+
+#pagination-hover li{
+    border:0; margin:0; padding:0;
+    font-size:11px;
+    list-style:none;
+    margin-right:2px;
+}
+#pagination-hover a{
+border:solid 1px #9aafe5
+margin-right:2px;
+}
+#pagination-hover .previous-off,
+#pagination-hover .next-off {
+border:solid 1px #DEDEDE
+color:#888888
+display:block;
+float:left;
+font-weight:bold;
+margin-right:2px;
+padding:3px 4px;
+}
+#pagination-hover .next a,
+#pagination-hover .previous a {
+font-weight:bold;
+}
+#pagination-hover .active{
+background:#2a7af1;
+color:#FFFFFF;
+font-weight:bold;
+display:block;
+float:left;
+padding:4px 6px;
+}
+#pagination-hover a:link,
+#pagination-hover a:visited {
+color:#0e509e
+display:block;
+float:left;
+padding:3px 6px;
+text-decoration:none;
+}
+#pagination-hover a:hover{
+border:solid 1px #0e509e;
+}
